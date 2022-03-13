@@ -16,7 +16,7 @@ const OptionScreen = ({navigation}) => {
       <Button 
       title="Recipe Section" 
       onPress={() =>{
-        navigation.navigate("Recipe")
+        navigation.navigate("Recipe Home")
       }}
       />
       <Button title="Food Delivery Section" 

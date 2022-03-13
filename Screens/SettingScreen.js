@@ -1,11 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import Center from '../Components/Center';
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/slices/authSlice";
+import { Button } from 'react-native-elements';
 
-const SettingScreen = () => {
+const SettingScreen = ({navigation}) => {
+  const dispatch = useDispatch()
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <Center>
+      <Button title="Log Out" 
+          type='clear'
+          onPress={() => {dispatch(logout());
+          }} 
+          />
+    </Center>
   );
 };
 

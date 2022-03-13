@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Center from '../Components/Center';
-import { Input, Image } from 'react-native-elements';
+import { Input, Image,Text } from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
+import { $axios } from "../Lib/axios";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/slices/authSlice";
+import { View } from 'react-native'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { foodStyles } from '../Styles/baseStyles'
+
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required(),
@@ -11,6 +18,36 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+
+  const getLoggedInUser = async (token) => {
+    try{
+      const response = await $axios.get("/auth/user");
+      return response.data;
+    }catch(error){
+      console.log(error.response.data);
+    }
+}
+
+  
+
+  const handleLogin = async (values) => {
+    try{
+      setLoading(true)
+      const response = await $axios.post("/auth/login", values);
+      
+      const user = await getLoggedInUser(response.data.accessToken);
+      await AsyncStorage.setItem("accessToken", response.data.accessToken); 
+      dispatch(login({user}));
+
+    }catch(error){
+      console.log(error.response.data);
+    }finally{
+      setLoading(false)
+    }
+  }
   return (
     <Center>
       <Image source={{
@@ -29,7 +66,7 @@ const LoginScreen = ({navigation}) => {
           email: "",
           password: "",
         }}
-        onSubmit={(val) => console.log(val)}
+        onSubmit={handleLogin}
         validationSchema={validationSchema}
       >
         {({handleSubmit, handleChange, errors, touched, handleBlur}) => {
@@ -58,10 +95,12 @@ const LoginScreen = ({navigation}) => {
           }} buttonStyle={{
             backgroundColor: "#00539CFF",
           }}
+          loading = {loading}
           />
           <Button title="Not a user ? Register Now." 
           type='clear'
-          onPress={() =>{navigation.navigate("Register Page")}} />
+          onPress={() =>{navigation.navigate("Register Page")}} 
+          />
         </> 
           );        
         }}

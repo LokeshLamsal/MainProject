@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useState } from "react";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Center from '../Components/Center';
 import { Input} from 'react-native-elements';
 import { Button } from 'react-native-elements/dist/buttons/Button';
+import axios from 'axios';
+import { $axios } from "../Lib/axios";
+
+import { Alert } from 'react-native';
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required(),
   lastName: Yup.string().required(),
   email: Yup.string().email().required(),
-  mobileNo: Yup.string().max(10, 'Enter 10 digits mobile numbers').required(),
+  mobile: Yup.string().max(10, 'Enter 10 digits mobile numbers').required(),
   password: Yup.string().required(),
   // validating password and confirm password with error message
   confirmPassword: Yup.string().required().oneOf([Yup.ref("password")],"Password and confirm password fields does not match."),
 });
 
 const RegisterScreen = () => {
-  const handleSubmit = (data) => {
-    console.log("Submitted data's are:", data)
-  };
+  const [loading, setLoading] = useState(false);
   return (
     <Center>
       <Formik
@@ -26,11 +28,42 @@ const RegisterScreen = () => {
           firstName: "",
           lastName: "",
           email: "",
-          mobileNo: "",
+          mobile: "",
           password: "",
           confirmPassword: "",
         }}
-        onSubmit={handleSubmit}
+        onSubmit={async (data, {resetForm, setFieldError}) => {
+          setLoading(true)
+          const apiData = {
+            ...data, 
+            name: `${data.firstName} ${data.lastName}`,
+          };
+          delete apiData.firstName;
+          delete apiData.lastName;
+
+          try {
+            await $axios.post("/register", apiData);
+            Alert.alert(
+              "Successfully registered!",
+              "Your registration was successful.",
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+            );
+          } catch(error){
+            if (error.response.status === 409){
+              setFieldError(
+                "email",
+                "The email you're trying to register already exists!"
+              );
+            }else{
+              Alert.alert(
+                "Alert",
+                "An unknown error was occurred. Please contact admin or try again later!",
+                [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+              );            }           
+          } finally{
+            setLoading(false);
+          }
+        }}
         validationSchema={validationSchema}
       >
         {({handleSubmit, handleChange, errors, touched, handleBlur}) => {
@@ -56,9 +89,9 @@ const RegisterScreen = () => {
           
           <Input 
           label='Mobile Number' 
-          onChangeText={handleChange('mobileNo')}
-          errorMessage={touched.mobileNo && errors.mobileNo}
-          onBlur={handleBlur('mobileNo')}/>
+          onChangeText={handleChange('mobile')}
+          errorMessage={touched.mobile && errors.mobile}
+          onBlur={handleBlur('mobile')}/>
           
           <Input 
           label='Password'
@@ -85,6 +118,7 @@ const RegisterScreen = () => {
             backgroundColor: "#00539CFF",
             marginBottom: 150,
           }}
+          loading={loading}
           />
         </> 
           );        

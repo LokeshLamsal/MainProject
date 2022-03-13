@@ -7,7 +7,7 @@ import SearchScreen from '../Screens/SearchScreen';
 import SettingScreen from '../Screens/SettingScreen';
 import { Ionicons } from '@expo/vector-icons'
 import AppStack from './AppStack';
-
+import RecipeHomePage from '../Screens/RecipeHomePage';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +30,7 @@ const Tabs = () => {
         tabBarInactiveTintColor: "black",
       })}
     >
+            <Tab.Screen name ="Recipe Page" component={RecipeHomePage} />
             <Tab.Screen name ="Food Home" options={{ header: ()=> null}} component={AppStack} />
             <Tab.Screen name ="Search Page" component={SearchScreen} />
             <Tab.Screen name ="Setting Page" component={SettingScreen} />

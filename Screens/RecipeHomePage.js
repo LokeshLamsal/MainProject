@@ -8,14 +8,14 @@ import FoodCard from '../Components/FoodCard';
 
 
 
-const FoodHomeScreen = () => {
+const RecipeHomePage = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { token} = useSelector((state) => state.auth);
   const [foods, setFoods] = useState([]);
   const fetchFoods = async () =>{
     setRefreshing(true)
     try {
-      const response = await $axios.get("/food-delivery");
+      const response = await $axios.get("/recipe");
       setFoods(response.data);
     } catch (error) {
       console.log(error.response.data);    
@@ -43,6 +43,6 @@ const FoodHomeScreen = () => {
   );
 };
 
-export default FoodHomeScreen;
+export default RecipeHomePage;
 
 
