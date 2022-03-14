@@ -19,9 +19,10 @@ const OptionScreen = ({navigation}) => {
         navigation.navigate("Recipe Home")
       }}
       />
+      
       <Button title="Food Delivery Section" 
       onPress={() =>{
-        navigation.navigate("Food Home Page")}}/>
+        navigation.navigate("Food Home")}}/>
     </View>
   );
 };

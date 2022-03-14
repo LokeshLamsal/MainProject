@@ -8,18 +8,20 @@ import SettingScreen from '../Screens/SettingScreen';
 import { Ionicons } from '@expo/vector-icons'
 import AppStack from './AppStack';
 import RecipeHomePage from '../Screens/RecipeHomePage';
+import Tabs from '../Navigations/Tabs';
+import RecipeTabs from '../Navigations/RecipeTabs';
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const OptionTabs = () => {
   return (
         <Tab.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ color, focused, size }) => {
           let iconName;
-          if (route.name === "Food Home") {
-            iconName = focused ? "home" : "home";
-          } else if (route.name === "Search Page") {
-            iconName = "search";
+          if (route.name === "Food Recipe Section") {
+            iconName = focused ? "pizza" : "pizza";
+          } else if (route.name === "Food Delivery Section") {
+            iconName = "fast-food-outline";
           } else if (route.name === "Setting Page") {
             iconName = focused ? "settings" : "settings";
           }
@@ -30,13 +32,10 @@ const Tabs = () => {
         tabBarInactiveTintColor: "black",
       })}
     >
-            <Tab.Screen name ="Food Home" options={{ header: ()=> null}} component={AppStack} />
-            <Tab.Screen name ="Search Page" component={SearchScreen} />
-            <Tab.Screen name ="Setting Page" component={SettingScreen} />
+            <Tab.Screen name ="Food Recipe Section" options={{ header: ()=> null}} component={RecipeTabs} />
+            <Tab.Screen name ="Food Delivery Section" options={{ header: ()=> null}} component={Tabs} />
         </Tab.Navigator>
   );
 };
 
-export default Tabs;
-
-
+export default OptionTabs;

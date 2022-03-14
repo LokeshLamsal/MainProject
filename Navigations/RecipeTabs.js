@@ -1,22 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import FoodHomeScreen from '../Screens/FoodHomeScreen';
-import SearchScreen from '../Screens/SearchScreen';
 import SettingScreen from '../Screens/SettingScreen';
 import { Ionicons } from '@expo/vector-icons'
-import AppStack from './AppStack';
-import RecipeHomePage from '../Screens/RecipeHomePage';
+import RecipeStack from './RecipeStack';
+import RecipeSearchPage from '../Screens/RecipeSearchPage';
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const RecipeTabs = () => {
   return (
         <Tab.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ color, focused, size }) => {
           let iconName;
-          if (route.name === "Food Home") {
+          if (route.name === "Recipe Home") {
             iconName = focused ? "home" : "home";
           } else if (route.name === "Search Page") {
             iconName = "search";
@@ -30,13 +26,13 @@ const Tabs = () => {
         tabBarInactiveTintColor: "black",
       })}
     >
-            <Tab.Screen name ="Food Home" options={{ header: ()=> null}} component={AppStack} />
-            <Tab.Screen name ="Search Page" component={SearchScreen} />
+            <Tab.Screen name ="Recipe Home" options={{ header: ()=> null}} component={RecipeStack} />
+            <Tab.Screen name ="Search Page" component={RecipeSearchPage} />
             <Tab.Screen name ="Setting Page" component={SettingScreen} />
         </Tab.Navigator>
   );
 };
 
-export default Tabs;
+export default RecipeTabs;
 
 
