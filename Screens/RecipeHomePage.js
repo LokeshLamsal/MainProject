@@ -4,19 +4,19 @@ import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
 import { $axios } from '../Lib/axios';
 import { useSelector } from 'react-redux';
-import FoodCard from '../Components/FoodCard';
+import RecipeCard from '../Components/RecipeCard';
 
 
 
 const RecipeHomePage = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { token} = useSelector((state) => state.auth);
-  const [foods, setFoods] = useState([]);
-  const fetchFoods = async () =>{
+  const [Recipe, setRecipe] = useState([]);
+  const fetchRecipe = async () =>{
     setRefreshing(true)
     try {
       const response = await $axios.get("/recipe");
-      setFoods(response.data);
+      setRecipe(response.data);
     } catch (error) {
       console.log(error.response.data);    
     }finally{
@@ -24,20 +24,20 @@ const RecipeHomePage = () => {
     }
   };
   useEffect(() =>{
-    fetchFoods();
+    fetchRecipe();
   }, []);
 
   return (   
     <View>   
       <FlatList
-      data={foods} 
-      renderItem = {({item}) => <FoodCard food = {item} />}
+      data={Recipe} 
+      renderItem = {({item}) => <RecipeCard Recipe = {item} />}
       keyExtractor={item => item._id}
       numColumns={2}
       showsVerticalScrollIndicator ={false}
       
       refreshing={refreshing}
-        onRefresh={fetchFoods}/>
+        onRefresh={fetchRecipe}/>
 
     </View>
   );

@@ -40,7 +40,7 @@ const CartItem = ({item}) => {
                   },
                 ]}
               >
-               ${item.totalPrice}
+               Rs.{item.totalPrice}
               </Text>
         </View>
       </View>
